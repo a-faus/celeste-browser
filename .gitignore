@@ -3,5 +3,6 @@
 !/.gitignore
 !/.gitattributes
 !/PUBLIC-README.md
+!/README.md
 !/public-site/
 !/.github/
