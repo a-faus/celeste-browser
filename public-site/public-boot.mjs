@@ -1,4 +1,5 @@
 // Static-only installer. Neither package contains save files or user settings.
+import {migrateSharedSaves, installSaveRouting, withSaveSession} from './shared-saves.mjs';
 export const mode = new URLSearchParams(location.search).get('mode') === 'randomizer' ? 'randomizer' : 'vanilla';
 export const namespace = `public-celeste-${mode}-v1`;
 const status = document.querySelector('#status');
@@ -127,20 +128,20 @@ async function start() {
   const randomizer = mode === 'randomizer';
   await install(root, manifest.base, 'Celeste', randomizer ? 0.85 : 1, 0);
   if (randomizer) await install(root, manifest.randomizer, 'Randomizer', 0.15, 85);
+  status.textContent = 'Preserving existing progress and preparing shared saves…';
+  await migrateSharedSaves(await navigator.storage.getDirectory());
+  await installSaveRouting(mode);
   await writeText(root, '.PublicGameReady', 'clean-v1');
   progress.value = 100;
   status.textContent = 'Starting the game…';
   // The published bundle and native worker both mount this mode's private folder.
-  await import('./assets/index-9lMdcnsS.js');
+  await import('./assets/index-9lMdcnsS.js?shared-saves=2');
   document.querySelector('#startup').remove();
   // Stop public.css's page layout from interfering with the game's canvas.
   document.querySelector('link[href="./public.css"]').remove();
 }
 
-if (navigator.locks) {
-  navigator.locks.request(namespace, {ifAvailable:true}, async lock => {
-    if (!lock) throw new Error('This game mode is already open in another tab. Close that tab first so your saves stay safe.');
+withSaveSession(navigator.locks, async () => {
     await start();
     await new Promise(() => {});
-  }).catch(fail);
-} else start().catch(fail);
+}).catch(fail);

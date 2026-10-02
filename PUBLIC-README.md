@@ -7,8 +7,10 @@ The `public-site/` folder is the only deployed content. It contains a clean
 game package: no original player's saves, settings, game manifest, passwords,
 cache assemblies, debug symbols, logs or private backups are included.
 
-Each game mode uses its own browser-local OPFS directory. Saves stay on the
-player's device and are not uploaded. Revisit the same URL in the same browser
+Both game modes use one shared browser-local OPFS save directory. Saves stay on the
+player's device and are not uploaded. Close one mode before opening the other.
+Existing separate saves are backed up before migration; newer conflicting files
+become active. Revisit the same URL in the same browser
 profile to continue. Clearing site data, private browsing, browser eviction,
 or changing devices can lose progress. Export important saves with the game's
 folder/filesystem interface. No cloud save or account service is provided.

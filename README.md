@@ -9,8 +9,13 @@ or a Cloudflare tunnel. Choose the base game or Randomizer on the home page.
 
 The `public-site/` folder is the only deployed content. The game packages
 contain no original player's saves, settings, private passwords, debug
-symbols, logs, or backups. Each game mode uses its own browser-local OPFS
-directory. Saves stay on the player's device and are not uploaded.
+symbols, logs, or backups. Game assets are isolated by mode, but both modes
+open the same browser-local OPFS save folder. Saves stay on the player's
+device and are not uploaded. Close one game tab before switching modes.
+
+Existing mode-specific saves are backed up before migration. If two files
+conflict, the more recently saved file becomes active; both original versions
+are preserved. Randomizer-exclusive levels remain playable only in Randomizer.
 
 Return to the same URL in the same browser profile to continue. Clearing site
 data, using Incognito, browser storage eviction, or changing devices can lose
@@ -33,7 +38,7 @@ low-end or school-managed devices may not support it.
 
 GitHub Actions deploys only `public-site/` to Pages. A same-origin service
 worker supplies the cross-origin isolation headers needed for threaded WASM.
-The base game and Randomizer use isolated browser filesystems.
+The base game and Randomizer share save files while keeping mod/game assets isolated.
 
 Celeste and its assets belong to their respective creators. Webleste is by
 MercuryWorkshop and contributors. This is a community browser deployment, not
