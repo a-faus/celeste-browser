@@ -1,0 +1,7 @@
+# Publication allowlist: never stage the copied private game or its archives.
+/*
+!/.gitignore
+!/.gitattributes
+!/PUBLIC-README.md
+!/public-site/
+!/.github/

@@ -1,0 +1,5 @@
+*.bin -text
+*.gz -text
+*.dll -text
+*.dat -text
+*.webp -text
